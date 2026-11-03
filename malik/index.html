@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>Menu admin</title>
+<style>
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:#f4f1ef;color:#171717;font-family:Arial,Helvetica,sans-serif;font-size:14px}
+button{font:inherit;background:#171717;color:#fff;border:0;border-radius:11px;padding:11px 16px;font-weight:700;cursor:pointer}
+button:disabled{opacity:.4;cursor:not-allowed}.alt{background:#fff;color:#171717;border:1px solid #cfc7c3}.sm{padding:6px 10px;font-size:12px;border-radius:8px}
+input,select{font:inherit;width:100%;padding:9px 10px;border:1px solid #cfc7c3;border-radius:9px;background:#fff;min-width:0}
+input[type=color]{width:46px;height:40px;padding:2px;flex:none}input[type=checkbox]{width:auto}
+label{display:block;font-size:12px;font-weight:700;margin:12px 0 4px}.muted{color:#777;font-size:12px;line-height:1.5}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px #0000000d}.card h2{font-size:16px;margin:0 0 4px}
+.irow{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+#login{min-height:100vh;display:grid;place-items:center;padding:20px}#login .card{width:360px;max-width:100%;padding:26px}
+.err{color:#b42318;font-size:13px;margin-top:10px;min-height:18px}.okmsg{color:#176d3b}
+.top{position:sticky;top:0;z-index:20;background:#171717;color:#fff;display:flex;gap:10px;align-items:center;padding:10px 16px;flex-wrap:wrap}
+.top b{font-size:15px}.top .sp{flex:1}.top a{color:#fff;font-size:13px}.top .alt{background:transparent;color:#fff;border-color:#555}
+#dirty{background:#f5a400;color:#171717;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:700}
+#st{font-size:12px;opacity:.85}
+.wrap{max-width:1180px;margin:auto;padding:16px;display:grid;grid-template-columns:1fr 400px;gap:22px;align-items:start}
+.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}.tabs button{background:#fff;color:#171717;border:1px solid #cfc7c3}.tabs button.on{background:#171717;color:#fff;border-color:#171717}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.thumb{width:40px;height:40px;border-radius:8px;border:1px solid #ddd;background:#eee center/contain no-repeat;flex:none;display:grid;place-items:center;font-size:22px}
+.bad{border-color:#b45309!important;background:#fffaf0}
+details.cat{border:1px solid #e5dfdb;border-radius:14px;margin-bottom:10px;background:#fff}details.cat>summary{padding:12px 14px;cursor:pointer;font-weight:800;display:flex;gap:8px;align-items:center;list-style:none}
+details.cat>summary::-webkit-details-marker{display:none}details.cat>summary:before{content:"▸";transition:.15s}details.cat[open]>summary:before{transform:rotate(90deg)}
+details.cat>summary small{color:#777;font-weight:600;margin-left:auto}.cbody{padding:0 14px 14px}
+.sec{border-top:1px dashed #ddd;margin-top:12px;padding-top:10px}.sec .hd input:first-child{font-weight:800}
+.it{display:flex;gap:6px;align-items:center;margin-bottom:6px;flex-wrap:wrap}.it .n{flex:1 1 150px}.it .p{flex:0 0 92px}.it select{flex:0 0 78px;padding:9px 4px}
+.calc{flex:0 0 auto;font-size:11px;color:#176d3b;font-weight:700;min-width:0}
+.chips{display:flex;gap:6px;margin:8px 0}.ex{background:#f4f1ef;border-radius:10px;padding:10px 12px;margin-top:10px;font-size:13px}
+.phone{position:sticky;top:64px;width:390px;max-width:100%;height:min(780px,calc(100vh - 84px));min-height:540px;background:#171717;border-radius:46px;padding:11px;box-shadow:0 10px 30px #0003}
+.screen{width:100%;height:100%;border-radius:36px;overflow:hidden;background:#fff}.screen iframe{width:100%;height:100%;border:0;display:block}
+#pvBtn{display:none}
+@media(max-width:960px){.wrap{grid-template-columns:1fr}#pvBtn{display:inline-block}.side{display:none}body.showpv .side{display:block;position:fixed;inset:56px 0 0;z-index:15;background:#f4f1ef;padding:12px;overflow:auto}body.showpv .phone{position:static;margin:auto;height:calc(100vh - 100px)}.two{grid-template-columns:1fr}}
+</style></head><body>
+
+<div id="login"><div class="card"><h2 style="font-size:20px">Menu admin</h2><p class="muted" id="lgHint">Enter the admin password you chose during setup.</p>
+<input type="password" id="pw" placeholder="Admin password" autocomplete="current-password"><div style="height:10px"></div>
+<button id="go" style="width:100%">Unlock</button><div class="err" id="lgErr"></div></div></div>
+
+<div id="app" hidden>
+<div class="top"><b id="hName">Menu admin</b><span id="dirty" hidden>● Unsaved changes</span><span id="st"></span><span class="sp"></span>
+<button class="alt sm" id="pvBtn">👁 Preview</button><a href="../" target="_blank" rel="noopener">Open menu ↗</a><button class="alt sm" id="out">Log out</button><button id="pub">Publish changes</button></div>
+<div class="wrap"><div>
+<div class="tabs" id="tabs"><button data-t="look" class="on">Look &amp; brand</button><button data-t="menu">Menu items</button><button data-t="gst">GST / tax</button><button data-t="sec">Publishing &amp; security</button></div>
+
+<div id="p_look">
+<div class="card"><h2>Restaurant</h2>
+<div class="two"><div><label>Restaurant name</label><input id="f_name"></div><div><label>Currency label</label><input id="f_currency" placeholder="Rs."></div></div>
+<label>Tagline</label><input id="f_tagline"><label>Footer note</label><input id="f_footer">
+<label>Google review link <span class="muted">(shows a “Review us on Google” button; blank = hidden)</span></label><input id="f_review" placeholder="https://g.page/r/…/review"></div>
+<div class="card"><h2>Colours</h2><div class="two">
+<div><label>Header box colour</label><div class="irow"><input type="color" id="c_color"><input id="t_color"></div></div>
+<div><label>Page background colour</label><div class="irow"><input type="color" id="c_pagecolor"><input id="t_pagecolor"></div></div></div></div>
+<div class="card"><h2>Photos</h2><p class="muted">Upload from your phone/computer, or paste an image link. Uploaded photos are shrunk automatically and saved when you press Publish.</p>
+<label>Logo</label><div id="i_logo"></div><label>Page background photo</label><div id="i_bg"></div>
+<label>Offers &amp; deals banner <span class="muted">(wide image under the category buttons)</span></label><div id="i_offer"></div>
+<label>Floating food photos <span class="muted">(transparent PNGs look best)</span></label><div id="decorList"></div><button class="alt sm" id="addDecor">+ Add photo</button></div>
+</div>
+
+<div id="p_menu" hidden>
+<div class="card"><h2>Menu items</h2><p class="muted">Edit names and prices, add or remove dishes. Prices here are the <b>base price</b> (before GST). For two prices type <code>200 / 240</code>.</p>
+<input id="flt" placeholder="🔎 Search a dish to find it quickly…"></div>
+<div id="menuList"></div><button class="alt" id="addCat">+ Add category</button><div style="height:30px"></div></div>
+
+<div id="p_gst" hidden><div class="card"><h2>GST / tax</h2><p class="muted">Add a % on top of every price. The menu shows the final price with a small note.</p>
+<label>GST %</label><div class="irow"><input type="number" id="g_rate" min="0" max="100" step="0.01" style="max-width:120px"><span class="muted">0 = no GST</span></div>
+<div class="chips"><button class="alt sm" data-r="5">5%</button><button class="alt sm" data-r="12">12%</button><button class="alt sm" data-r="18">18%</button><button class="alt sm" data-r="0">Off</button></div>
+<label>Where to show the small note</label><select id="g_where"><option value="item">Under every price</option><option value="top">One line under “Our Menu”</option></select>
+<label>Note text</label><input id="g_label" placeholder="GST included">
+<div class="ex" id="g_ex"></div></div></div>
+
+<div id="p_sec" hidden>
+<div class="card"><h2>Publishing (GitHub)</h2><p class="muted">Publish saves your changes to the menu’s GitHub repository. The token is stored <b>encrypted with your admin password and kept only on this device</b>. It never leaves this browser except to talk to GitHub. On a new phone or computer, paste the token once.</p>
+<label>Repository (owner/name)</label><input id="s_repo" placeholder="restaurant-name/mr-flavour">
+<label>GitHub token</label><input type="password" id="s_tok" autocomplete="off" placeholder="" >
+<label style="font-weight:400"><input type="checkbox" id="s_site"> Also store the token inside the site <span class="muted">(works on every device, but less safe: not recommended)</span></label>
+<label>New admin password <span class="muted">(optional, 10+ characters)</span></label><input type="password" id="s_new" autocomplete="new-password">
+<label>Repeat new password</label><input type="password" id="s_new2" autocomplete="new-password">
+<div style="height:12px"></div><button id="s_save">Save security settings</button><div class="err" id="s_msg"></div>
+<p class="muted">After changing the password, the old one may keep working for a few minutes while the site updates.</p></div>
+<div class="card"><h2>Backup</h2><button class="alt" id="dlCfg">Download config.json</button></div></div>
+</div>
+<div class="side"><div class="phone"><div class="screen"><iframe id="pv" title="Menu preview"></iframe></div></div></div>
+</div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+function h(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+const isImg=u=>/^(https?:\/\/|data:image\/|images\/)/i.test(u||'');
+const b64=s=>btoa(unescape(encodeURIComponent(s)));
+let S=null,cfg=null,dirty=false,local={};
+
+// ---------- crypto (password protects the stored GitHub token) ----------
+const enc=new TextEncoder();
+const be=u=>{let s='';u.forEach(b=>s+=String.fromCharCode(b));return btoa(s)},bd=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function dkey(pw,salt,iter){const m=await crypto.subtle.importKey('raw',enc.encode(pw),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:iter,hash:'SHA-256'},m,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
+async function seal(pw,obj){const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12)),iter=600000,k=await dkey(pw,salt,iter);
+ const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},k,enc.encode(JSON.stringify(obj)));return{v:1,iter,salt:be(salt),iv:be(iv),ct:be(new Uint8Array(ct))}}
+async function unseal(pw,box){const k=await dkey(pw,bd(box.salt),box.iter),pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:bd(box.iv)},k,bd(box.ct));return JSON.parse(new TextDecoder().decode(pt))}
+
+// ---------- login ----------
+let BOX=null;
+fetch('admin.json?'+Date.now()).then(r=>r.ok?r.json():Promise.reject()).then(b=>{BOX=b}).catch(()=>{$('lgHint').textContent='Admin is not set up on this site yet. Run the setup tool and set an admin password.';$('go').disabled=true});
+$('pw').onkeydown=e=>e.key=='Enter'&&$('go').click();
+$('go').onclick=async()=>{
+ const pw=$('pw').value;$('lgErr').textContent='';if(!pw||!BOX)return;
+ if(!(window.crypto&&crypto.subtle)){$('lgErr').textContent='This page needs https (secure connection).';return}
+ $('go').disabled=true;$('go').textContent='Checking…';
+ try{
+  let pl;try{pl=await unseal(pw,BOX)}catch(e){await new Promise(r=>setTimeout(r,800));throw new Error('Wrong password')}
+  S={pw,token:pl.token||'',repo:BOX.repo||'',branch:BOX.branch||'',inSite:!!pl.token};
+  if(!S.token){try{const d=JSON.parse(localStorage.getItem('mk')||'null');if(d&&d.box){S.token=(await unseal(pw,d.box)).token||'';S.repo=S.repo||d.repo||'';S.branch=S.branch||d.branch||''}}catch(e){}}
+  await loadCfg();showApp();
+ }catch(e){$('lgErr').textContent=e.message||'Could not open admin'}
+ $('go').disabled=false;$('go').textContent='Unlock';
+};
+$('out').onclick=()=>{if(!dirty||confirm('Discard unpublished changes and log out?')){dirty=false;location.reload()}};
+addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
+
+// ---------- GitHub ----------
+async function gh(p,o={}){
+ const r=await fetch('https://api.github.com'+p,{...o,cache:'no-store',headers:{Authorization:'Bearer '+S.token,Accept:'application/vnd.github+json',...(o.headers||{})}});
+ if(!r.ok&&!o.soft){let m='';try{m=(await r.json()).message}catch(e){}throw new Error(r.status+' '+m)}return r}
+async function branch(){if(S.branch)return S.branch;S.branch=(await(await gh('/repos/'+S.repo)).json()).default_branch||'main';return S.branch}
+async function putFile(path,content,msg,isNew){
+ const br=await branch(),u='/repos/'+S.repo+'/contents/'+path;let sha;
+ if(!isNew){const ex=await gh(u+'?ref='+encodeURIComponent(br),{soft:1});if(ex.ok)sha=(await ex.json()).sha}
+ await gh(u,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,content,branch:br,sha})})}
+function norm(c){c=c||{};const o={name:'',tagline:'',footer:'',currency:'Rs.',color:'#f10b0b',pagecolor:'#f5eaea',logo:'',bg:'',review:'',offer:'',decor:[],categories:[],...c};
+ if(!Array.isArray(o.decor))o.decor=[];if(!Array.isArray(o.categories))o.categories=[];o.gst={rate:0,label:'GST included',where:'item',...(c.gst||{})};
+ o.categories.forEach(k=>{k.sections=k.sections||[];k.sections.forEach(s=>{s.items=s.items||[];s.combo=s.combo||''})});return o}
+async function loadCfg(){
+ let c=null;
+ if(S.token&&S.repo){try{const br=await branch(),r=await gh('/repos/'+S.repo+'/contents/config.json?ref='+encodeURIComponent(br),{headers:{Accept:'application/vnd.github.raw+json'}});c=JSON.parse(await r.text())}catch(e){c=null}}
+ if(!c){const r=await fetch('../config.json?'+Date.now());if(!r.ok)throw new Error('Could not load config.json');c=await r.json()}
+ cfg=norm(c)}
+
+// ---------- preview ----------
+const show=v=>local[v]||(/^images\//.test(v||'')?'../'+v:v||'');
+function pcfg(){let s=JSON.stringify(cfg);for(const p in local)s=s.split(JSON.stringify(p)).join(JSON.stringify(local[p]));return JSON.parse(s)}
+function post(){const f=$('pv');if(f.contentWindow)f.contentWindow.postMessage({cfg:pcfg()},'*')}
+let pt;const postSoon=()=>{clearTimeout(pt);pt=setTimeout(post,200)};
+$('pv').onload=()=>{post();setTimeout(post,300)};
+function touch(){dirty=true;$('dirty').hidden=false;postSoon()}
+$('pvBtn').onclick=()=>{document.body.classList.toggle('showpv');$('pvBtn').textContent=document.body.classList.contains('showpv')?'✕ Close':'👁 Preview'};
+
+// ---------- image field ----------
+function shrink(file,max){return new Promise((res,rej)=>{const r=new FileReader();r.onerror=()=>rej(new Error('Could not read file'));
+ r.onload=()=>{const im=new Image();im.onerror=()=>rej(new Error('That file is not an image'));
+  im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height)),w=Math.max(1,Math.round(im.width*k)),hh=Math.max(1,Math.round(im.height*k)),c=document.createElement('canvas');c.width=w;c.height=hh;c.getContext('2d').drawImage(im,0,0,w,hh);
+   let u=c.toDataURL('image/webp',.86);if(!u.startsWith('data:image/webp'))u=file.type=='image/png'?c.toDataURL('image/png'):c.toDataURL('image/jpeg',.86);res(u)};im.src=r.result};r.readAsDataURL(file)})}
+function imgField(get,set,o={}){
+ const w=h('div','irow'),th=h('div','thumb'),inp=h('input'),up=h('button','alt sm','Upload'),rm=h('button','alt sm','✕'),fi=h('input');
+ fi.type='file';fi.accept='image/*';fi.hidden=true;up.type=rm.type='button';rm.title='Remove';
+ const paint=()=>{const v=get()||'',img=isImg(v)||/^images\//.test(v);th.style.backgroundImage=img?'url("'+show(v).replace(/"/g,'')+'")':'';th.textContent=!img&&v&&o.emoji?v:'';
+  inp.value=v.startsWith('data:')?'':v;inp.placeholder=v.startsWith('data:')?'Photo chosen – uploads when you publish':(o.hint||'Paste image link, or press Upload');
+  inp.classList.toggle('bad',!!v&&!o.emoji&&!isImg(v)&&!v.startsWith('data:'))};
+ inp.oninput=()=>{set(inp.value.trim());paint()};
+ up.onclick=()=>fi.click();rm.onclick=()=>{if(o.remove)o.remove();else{set('');paint()}};
+ fi.onchange=async()=>{const f=fi.files[0];if(!f)return;try{set(await shrink(f,o.max||900));paint()}catch(e){alert(e.message)}fi.value=''};
+ w.append(th,inp,up,rm,fi);paint();return w}
+
+// ---------- Look pane ----------
+function bind(id,key,trim){const e=$(id);e.value=cfg[key]||'';e.oninput=()=>{cfg[key]=trim?e.value.trim():e.value;if(key=='name')$('hName').textContent=e.value||'Menu admin';touch()}}
+function colorBind(key){const c=$('c_'+key),t=$('t_'+key),ok=v=>/^#[0-9a-f]{6}$/i.test(v);c.value=ok(cfg[key])?cfg[key]:'#ffffff';t.value=cfg[key];
+ c.oninput=()=>{cfg[key]=t.value=c.value;touch()};t.oninput=()=>{if(ok(t.value.trim())){cfg[key]=c.value=t.value.trim();touch()}}}
+function drawDecor(){const L=$('decorList');L.innerHTML='';cfg.decor.forEach((v,i)=>L.append(imgField(()=>cfg.decor[i],x=>{cfg.decor[i]=x;touch()},{max:900,hint:'Image link or upload',remove:()=>{cfg.decor.splice(i,1);drawDecor();touch()}})))}
+$('addDecor').onclick=()=>{cfg.decor.push('');drawDecor()};
+function drawLook(){
+ bind('f_name','name');bind('f_currency','currency');bind('f_tagline','tagline');bind('f_footer','footer');bind('f_review','review',1);
+ colorBind('color');colorBind('pagecolor');
+ [['logo',500],['bg',1600],['offer',1400]].forEach(([k,m])=>{const d=$('i_'+k);d.innerHTML='';d.append(imgField(()=>cfg[k],x=>{cfg[k]=x;touch()},{max:m}))});
+ drawDecor()}
+
+// ---------- GST ----------
+const rate=()=>{const r=parseFloat(cfg.gst.rate);return r>0?r:0};
+const fmt=n=>Math.round(n).toLocaleString('en-IN');
+function taxed(p){const r=rate();if(!r||!p)return p;return String(p).replace(/\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?/g,m=>fmt(parseFloat(m.replace(/,/g,''))*(1+r/100)))}
+function gstUI(){const r=rate(),cur=cfg.currency||'Rs.';$('g_ex').textContent=r?'Example: a '+cur+' 200 dish will show as '+cur+' '+taxed('200')+' ('+(cfg.gst.where=='top'?'with the note under “Our Menu”':'with “'+(cfg.gst.label||'GST included')+'” below the price')+').':'GST is off. Prices show exactly as typed.'}
+function drawGst(){$('g_rate').value=cfg.gst.rate||0;$('g_where').value=cfg.gst.where;$('g_label').value=cfg.gst.label;gstUI()}
+const gChange=()=>{touch();gstUI();drawMenu()};
+$('g_rate').oninput=e=>{cfg.gst.rate=Math.max(0,Math.min(100,parseFloat(e.target.value)||0));gChange()};
+$('g_where').onchange=e=>{cfg.gst.where=e.target.value;gChange()};
+$('g_label').oninput=e=>{cfg.gst.label=e.target.value;gChange()};
+document.querySelectorAll('.chips button').forEach(b=>b.onclick=()=>{cfg.gst.rate=+b.dataset.r;$('g_rate').value=cfg.gst.rate;gChange()});
+
+// ---------- Menu editor ----------
+const open=new Set(),names=new Map(),secIn=new Map();let focusIt=null;
+const mv=(a,i,d)=>{const j=i+d;if(j<0||j>=a.length)return false;[a[i],a[j]]=[a[j],a[i]];return true};
+function btn(t,title,fn){const b=h('button','alt sm',t);b.type='button';b.title=title;b.onclick=fn;return b}
+function txt(cls,val,ph,fn){const i=h('input',cls);i.value=val||'';i.placeholder=ph||'';i.oninput=()=>fn(i.value,i);return i}
+function drawMenu(){
+ const L=$('menuList'),q=$('flt').value.trim().toLowerCase(),cur=cfg.currency||'Rs.';L.innerHTML='';names.clear();secIn.clear();
+ const match=(cat,s,it)=>!q||(it.name+' '+s.name+' '+cat.title).toLowerCase().includes(q);
+ cfg.categories.forEach(cat=>{
+  const secs=cat.sections.filter(s=>!q||s.items.some(it=>match(cat,s,it)));if(q&&!secs.length)return;
+  const d=h('details','cat'),sm=h('summary'),st=h('span','',cat.title||'(unnamed)'),cn=h('small','',cat.sections.reduce((n,s)=>n+s.items.length,0)+' items');
+  sm.append(st,cn);d.append(sm);d.open=q?true:open.has(cat);d.ontoggle=()=>{if(!q)d.open?open.add(cat):open.delete(cat)};
+  const b=h('div','cbody');d.append(b);
+  b.append(h('label','','Category name'),txt('',cat.title,'',(v)=>{const old=cat.title;cat.sections.forEach(s=>{if(s.name===old){s.name=v;if(secIn.get(s))secIn.get(s).value=v}});cat.title=v;st.textContent=v||'(unnamed)';touch()}));
+  b.append(h('label','','Icon (emoji, or image)'),imgField(()=>cat.icon,x=>{cat.icon=x;touch()},{max:240,emoji:true,hint:'Emoji like ☕ or image link / upload'}));
+  const ar=h('div','irow');ar.style.marginTop='10px';
+  ar.append(btn('↑ Move up','Move category up',()=>{if(mv(cfg.categories,cfg.categories.indexOf(cat),-1)){open.add(cat);drawMenu();touch()}}),
+   btn('↓ Move down','Move category down',()=>{if(mv(cfg.categories,cfg.categories.indexOf(cat),1)){open.add(cat);drawMenu();touch()}}),
+   btn('+ Add section','Add section',()=>{cat.sections.push({name:'NEW SECTION',combo:'',items:[]});open.add(cat);drawMenu();touch()}),
+   btn('🗑 Delete category','Delete',()=>{if(confirm('Delete category "'+cat.title+'" and all its dishes?')){cfg.categories.splice(cfg.categories.indexOf(cat),1);drawMenu();touch()}}));
+  b.append(ar);
+  secs.forEach(s=>{
+   const sb=h('div','sec'),hd=h('div','irow hd'),si=txt('',s.name,'Section name',v=>{s.name=v;touch()});secIn.set(s,si);
+   const ci=txt('',s.combo,'Combo price (optional)',v=>{s.combo=v.trim();touch()});ci.style.maxWidth='150px';
+   hd.append(si,ci,btn('↑','Move section up',()=>{if(mv(cat.sections,cat.sections.indexOf(s),-1)){drawMenu();touch()}}),btn('↓','Move section down',()=>{if(mv(cat.sections,cat.sections.indexOf(s),1)){drawMenu();touch()}}),
+    btn('✕','Delete section',()=>{if(confirm('Delete section "'+s.name+'" and its dishes?')){cat.sections.splice(cat.sections.indexOf(s),1);drawMenu();touch()}}));
+   sb.append(hd);
+   s.items.forEach(it=>{if(!match(cat,s,it))return;
+    const r=h('div','it'),calc=h('span','calc'),upd=()=>{calc.textContent=rate()&&it.price?'→ '+cur+' '+taxed(it.price):''};
+    const ni=txt('n',it.name,'Dish name',v=>{it.name=v;touch()}),pi=txt('p',it.price,'Price',v=>{it.price=v.trim();upd();touch()}),vs=h('select');names.set(it,ni);
+    [['v','Veg'],['n','Non-veg'],['b','Both']].forEach(([k,t])=>{const o=h('option','',t);o.value=k;vs.append(o)});vs.value=it.veg=='n'||it.veg=='b'?it.veg:'v';vs.onchange=()=>{it.veg=vs.value;touch()};upd();
+    r.append(ni,pi,calc,vs,btn('↑','Move up',()=>{if(mv(s.items,s.items.indexOf(it),-1)){drawMenu();touch()}}),btn('↓','Move down',()=>{if(mv(s.items,s.items.indexOf(it),1)){drawMenu();touch()}}),
+     btn('✕','Delete dish',()=>{s.items.splice(s.items.indexOf(it),1);drawMenu();touch()}));sb.append(r)});
+   if(!q)sb.append(btn('+ Add dish','Add dish',()=>{const it={name:'New dish',price:'',veg:'v'};s.items.push(it);focusIt=it;open.add(cat);drawMenu();touch()}));
+   b.append(sb)});
+  L.append(d)});
+ if(!L.children.length)L.append(h('p','muted',q?'No dishes match.':'No categories yet. Add one below.'));
+ $('addCat').hidden=!!q;
+ if(focusIt){const i=names.get(focusIt);focusIt=null;if(i){i.focus();i.select()}}}
+$('flt').oninput=drawMenu;
+$('addCat').onclick=()=>{const c={title:'NEW CATEGORY',icon:'🍽️',sections:[{name:'NEW CATEGORY',combo:'',items:[]}]};cfg.categories.push(c);open.add(c);drawMenu();touch();$('menuList').lastChild.scrollIntoView({behavior:'smooth',block:'center'})};
+
+// ---------- publish ----------
+const st=t=>$('st').textContent=t||'';
+$('pub').onclick=async()=>{
+ if(!S.token||!S.repo){tab('sec');$('s_msg').className='err';$('s_msg').textContent='Add the repository and GitHub token first, then press Publish again.';return}
+ $('pub').disabled=true;
+ try{
+  const c=JSON.parse(JSON.stringify(cfg));c.decor=c.decor.filter(Boolean);
+  const up=async(v,kind)=>{const m=/^data:image\/(\w+);base64,(.*)$/.exec(v||'');if(!m)return v;
+   const path='images/'+kind+'-'+Date.now().toString(36)+Math.random().toString(36).slice(2,5)+'.'+(m[1]=='jpeg'?'jpg':m[1]);st('Uploading '+path+'…');await putFile(path,m[2],'Admin: add '+path,true);local[path]=v;return path};
+  c.logo=await up(c.logo,'logo');c.bg=await up(c.bg,'bg');c.offer=await up(c.offer,'offer');
+  for(let i=0;i<c.decor.length;i++)c.decor[i]=await up(c.decor[i],'decor');
+  for(const k of c.categories)k.icon=await up(k.icon,'icon');
+  st('Saving menu…');await putFile('config.json',b64(JSON.stringify(c,null,1)),'Admin: update menu');
+  cfg=c;dirty=false;$('dirty').hidden=true;drawLook();drawMenu();st('Published ✓ live in 1–2 minutes');setTimeout(()=>st(''),9000);
+ }catch(e){st('');alert('Publish failed: '+e.message+'\n\nCheck the repository name and token in Publishing & security.')}
+ $('pub').disabled=false};
+
+// ---------- security ----------
+$('s_save').onclick=async()=>{
+ const m=$('s_msg');m.className='err';m.textContent='';
+ const repo=$('s_repo').value.trim().replace(/^https?:\/\/github\.com\//,'').replace(/\.git$/,'').replace(/\/+$/,''),tok=$('s_tok').value.trim()||S.token,np=$('s_new').value;
+ if(!/^[\w.-]+\/[\w.-]+$/.test(repo))return m.textContent='Repository must look like owner/name';
+ if(!tok)return m.textContent='Paste a GitHub token';
+ if(np&&np.length<10)return m.textContent='New password must be at least 10 characters';
+ if(np&&np!==$('s_new2').value)return m.textContent='The two new passwords do not match';
+ const old={...S};$('s_save').disabled=true;m.className='muted';m.textContent='Saving…';
+ try{
+  S.repo=repo;S.token=tok;S.branch=repo==old.repo?old.branch:'';await branch();
+  const pw=np||S.pw,chk=$('s_site').checked;
+  if(np||chk||old.inSite){const box=await seal(pw,{t:1,token:chk?tok:''});box.repo=repo;box.branch=S.branch;
+   await putFile('malik/admin.json',b64(JSON.stringify(box,null,1)),'Admin: update security');S.inSite=chk}
+  try{localStorage.setItem('mk',JSON.stringify({repo,branch:S.branch,box:await seal(pw,{token:tok})}))}catch(e){}
+  S.pw=pw;$('s_tok').value='';$('s_new').value=$('s_new2').value='';m.className='okmsg';m.textContent='Saved on this device ✓'+(np?' Password changed.':'');paintSec();
+ }catch(e){S=old;m.className='err';m.textContent='Failed: '+e.message}
+ $('s_save').disabled=false};
+function paintSec(){$('s_repo').value=S.repo;$('s_site').checked=!!S.inSite;$('s_tok').placeholder=S.token?'•••••••• (saved, leave blank to keep)':'ghp_… or fine-grained token (Contents: read & write)'}
+$('dlCfg').onclick=()=>{const a=h('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(cfg,null,1)],{type:'application/json'}));a.download='config.json';a.click()};
+
+// ---------- tabs / start ----------
+function tab(t){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t==t));['look','menu','gst','sec'].forEach(k=>$('p_'+k).hidden=k!=t)}
+$('tabs').onclick=e=>{if(e.target.dataset.t)tab(e.target.dataset.t)};
+function showApp(){$('login').hidden=true;$('app').hidden=false;$('hName').textContent=cfg.name||'Menu admin';drawLook();drawGst();drawMenu();paintSec();$('pv').src='../index.html#preview'}
+</script></body></html>
+<script async src="/.netlify/scripts/hud?variant=owner-private" data-nf-variant="owner-private" data-netlify-site-id="36eb4248-0e99-4898-ab45-4cb67a4fc224" data-app-host="app.netlify.com"></script>
