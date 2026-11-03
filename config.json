@@ -3,18 +3,13 @@
  "tagline": "Pizza, momos & more. Made fresh.",
  "footer": "All prices in Indian Rupees (INR).",
  "currency": "Rs.",
- "color": "#f10b0b",
- "pagecolor": "#f5eaea",
+ "color": "#ee2f2f",
+ "pagecolor": "#f9f5e1",
  "logo": "",
- "bg": "",
+ "bg": "https://res.cloudinary.com/ngg0a8rt/image/upload/v1793638353/o6bsuddedtfuu6sttxu4.jpg",
  "review": "",
  "offer": "",
  "decor": [],
- "gst": {
-  "rate": 0,
-  "label": "GST included",
-  "where": "item"
- },
  "categories": [
   {
    "title": "PIZZA",
@@ -2047,5 +2042,10 @@
     }
    ]
   }
- ]
+ ],
+ "gst": {
+  "rate": 5,
+  "label": "GST included",
+  "where": "item"
+ }
 }
